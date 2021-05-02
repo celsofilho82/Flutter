@@ -15,7 +15,7 @@ class ByteBankApp extends StatelessWidget {
 
 class FormularioTransferencia extends StatelessWidget {
   final TextEditingController _controladorCampoNumeroConta =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _controladorCampoValor = TextEditingController();
 
   @override
@@ -81,10 +81,16 @@ class Editor extends StatelessWidget {
   }
 }
 
-class ListaTransferencias extends StatelessWidget {
-
+class ListaTransferencias extends StatefulWidget {
   final List<Transferencia> _transferencias = [];
 
+  @override
+  State<StatefulWidget> createState() {
+    return ListaTransferenciasState();
+  }
+}
+
+class ListaTransferenciasState extends State<ListaTransferencias> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,21 +98,20 @@ class ListaTransferencias extends StatelessWidget {
         title: Text('Transferências'),
       ),
       body: ListView.builder(
-        itemCount: _transferencias.length,
-        itemBuilder: (context, indice){
-          final transferencia = _transferencias[indice];
-          return ItemTransferencia(transferencia);
-        }
-      ),
+          itemCount: widget._transferencias.length,
+          itemBuilder: (context, indice) {
+            final transferencia = widget._transferencias[indice];
+            return ItemTransferencia(transferencia);
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          final Future<Transferencia> future = Navigator.push(
-              context, MaterialPageRoute(builder: (context) {
+          final Future<Transferencia> future =
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
             return FormularioTransferencia();
           }));
           future.then((transferenciaRecebida) {
             debugPrint('$transferenciaRecebida');
-            _transferencias.add(transferenciaRecebida);
+            widget._transferencias.add(transferenciaRecebida);
           });
         },
         child: Icon(Icons.add),

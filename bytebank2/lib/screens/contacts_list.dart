@@ -4,7 +4,12 @@ import 'package:bytebank2/screens/contact_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class ContactsList extends StatelessWidget {
+class ContactsList extends StatefulWidget {
+  @override
+  _ContactsListState createState() => _ContactsListState();
+}
+
+class _ContactsListState extends State<ContactsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +57,7 @@ class ContactsList extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => (ContactForm()),
             ),
-          );
+          ).then((value) => setState(() {}));
         },
         child: Icon(
           Icons.add,

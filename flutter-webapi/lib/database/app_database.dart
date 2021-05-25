@@ -1,9 +1,13 @@
-import 'package:bytebank/database/dao/contact_dao.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-Future<Database> getDatabase() async {
-  final String path = join(await getDatabasesPath(), 'bytebank.db');
+import 'dao/contact_dao.dart';
+
+Future<Database> createDatabase() async {
+  // Implementação usando async -> await
+
+  final String dbPath = await getDatabasesPath();
+  final String path = join(dbPath, 'bytebank.db');
   return openDatabase(
     path,
     onCreate: (db, version) {
@@ -12,4 +16,3 @@ Future<Database> getDatabase() async {
     version: 1,
   );
 }
-

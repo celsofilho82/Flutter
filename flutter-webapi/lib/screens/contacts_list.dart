@@ -1,26 +1,26 @@
 import 'package:bytebank/database/dao/contact_dao.dart';
 import 'package:bytebank/models/contact.dart';
-import 'package:bytebank/screens/contact_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+import 'contact_form.dart';
 
 class ContactsList extends StatefulWidget {
-
   @override
   _ContactsListState createState() => _ContactsListState();
 }
 
 class _ContactsListState extends State<ContactsList> {
-  final ContactDao _dao = ContactDao();
-
+  final ContactDao contactDao = ContactDao();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Transfer'),
+        title: Text('Contacts'),
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: [],
-        future: _dao.findAll(),
+        future: contactDao.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -32,11 +32,10 @@ class _ContactsListState extends State<ContactsList> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     CircularProgressIndicator(),
-                    Text('Loading')
+                    Text('Loading'),
                   ],
                 ),
               );
-              break;
             case ConnectionState.active:
               break;
             case ConnectionState.done:
@@ -44,20 +43,21 @@ class _ContactsListState extends State<ContactsList> {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final Contact contact = contacts[index];
-                  return _ContactItem(contact);
+                  return _ContactItem(
+                    contact: contact,
+                  );
                 },
                 itemCount: contacts.length,
               );
-              break;
           }
-          return Text('Unknown error');
+          return Text('Unknown Error!!!');
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => ContactForm(),
+              builder: (context) => (ContactForm()),
             ),
           ).then((value) => setState(() {}));
         },
@@ -72,7 +72,7 @@ class _ContactsListState extends State<ContactsList> {
 class _ContactItem extends StatelessWidget {
   final Contact contact;
 
-  _ContactItem(this.contact);
+  const _ContactItem({Key key, this.contact}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,15 +80,11 @@ class _ContactItem extends StatelessWidget {
       child: ListTile(
         title: Text(
           contact.name,
-          style: TextStyle(
-            fontSize: 24.0,
-          ),
+          style: TextStyle(fontSize: 24.0),
         ),
         subtitle: Text(
           contact.accountNumber.toString(),
-          style: TextStyle(
-            fontSize: 16.0,
-          ),
+          style: TextStyle(fontSize: 16.0),
         ),
       ),
     );

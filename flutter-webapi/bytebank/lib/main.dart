@@ -1,5 +1,6 @@
-import 'package:bytebank/screens/dashbord.dart';
 import 'package:flutter/material.dart';
+
+import 'screens/dashbord.dart';
 
 void main() {
   runApp(ByteBankApp());

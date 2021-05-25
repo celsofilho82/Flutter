@@ -1,8 +1,8 @@
-import 'package:bytebank/screens/transactions_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'contacts_list.dart';
+import 'transactions_list.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key key}) : super(key: key);

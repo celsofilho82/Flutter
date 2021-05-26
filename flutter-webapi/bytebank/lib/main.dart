@@ -7,9 +7,6 @@ import 'package:bytebank2/http/webclient.dart';
 
 void main() {
   runApp(ByteBankApp());
-  save(Transaction(300.0, Contact(0, 'Apollo', 2000)))
-      .then((transaction) => print(transaction));
-  findAll().then((transactions) => print('New transactions $transactions'));
 }
 
 class ByteBankApp extends StatelessWidget {

@@ -1,4 +1,5 @@
 import 'package:bytebank2/components/progress.dart';
+import 'package:bytebank2/screens/transaction_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -37,8 +38,11 @@ class _ContactsListState extends State<ContactsList> {
                 itemBuilder: (context, index) {
                   final Contact contact = contacts[index];
                   return _ContactItem(
-                    contact: contact,
-                  );
+                      contact: contact,
+                      onClick: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => TransactionForm(contact)));
+                      });
                 },
                 itemCount: contacts.length,
               );
@@ -66,13 +70,19 @@ class _ContactsListState extends State<ContactsList> {
 
 class _ContactItem extends StatelessWidget {
   final Contact contact;
+  final Function onClick;
 
-  const _ContactItem({Key key, this.contact}) : super(key: key);
+  const _ContactItem({
+    Key key,
+    this.contact,
+    @required this.onClick,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        onTap: () => onClick(),
         title: Text(
           contact.name,
           style: TextStyle(fontSize: 24.0),

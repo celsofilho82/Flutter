@@ -11,7 +11,7 @@ Future<List<Transaction>> findAll() async {
     interceptors: [LoggingInterceptor()],
   );
   final Uri url = Uri.tryParse('http://192.168.0.109:8080/transactions');
-  final Response response = await client.get(url);
+  final Response response = await client.get(url).timeout(Duration(seconds: 15));
   final List<dynamic> decodedJson = jsonDecode(response.body);
   final List<Transaction> transactions = [];
   for (Map<String, dynamic> transactionJson in decodedJson) {

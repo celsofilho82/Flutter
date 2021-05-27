@@ -1,9 +1,6 @@
-import 'package:bytebank2/models/contact.dart';
-import 'package:bytebank2/models/transaction.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/dashbord.dart';
-import 'package:bytebank2/http/webclient.dart';
 
 void main() {
   runApp(ByteBankApp());

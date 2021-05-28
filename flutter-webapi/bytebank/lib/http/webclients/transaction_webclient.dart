@@ -21,10 +21,10 @@ class TransactionWebClient{
 
   List<Transaction> _toTransactions(Response response) {
     final List<dynamic> decodedJson = jsonDecode(response.body);
-    final List<Transaction> transactions = [];
-    for (Map<String, dynamic> transactionJson in decodedJson) {
-      transactions.add(Transaction.fromJson(transactionJson));
-    }
+    final List<Transaction> transactions = decodedJson.map((dynamic json) {
+      return Transaction.fromJson(json);
+    }).toList();
+
     return transactions;
   }
 

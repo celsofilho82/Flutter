@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bytebank2/http/interceptors/logging_interceptor.dart';
 import 'package:bytebank2/models/contact.dart';
 import 'package:bytebank2/models/transaction.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_client_with_interceptor.dart';
 
@@ -28,7 +29,7 @@ class TransactionWebClient{
     return transactions;
   }
 
-  Future<Transaction> save(Transaction transaction) async {
+  Future<Transaction> save(Transaction transaction, String password, BuildContext context) async {
     final Client client = HttpClientWithInterceptor.build(
       interceptors: [LoggingInterceptor()],
     );
@@ -45,7 +46,7 @@ class TransactionWebClient{
     final Response response = await client.post(url,
         headers: {
           'Content-type': 'application/json',
-          'password': '1000',
+          'password': password,
         },
         body: transactionJson);
 

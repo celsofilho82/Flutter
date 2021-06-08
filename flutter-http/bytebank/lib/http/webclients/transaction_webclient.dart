@@ -61,11 +61,11 @@ class TransactionWebClient {
 
   void _throwHttpError(Response response) {
     final Map<int, String> _statusCodeResponse = {
-      400 : 'there was an error submitting transaction',
-      401 : 'authentication failed'
+      400: 'there was an error submitting transaction',
+      401: 'authentication failed'
     };
 
-    throw Exception(_statusCodeResponse[response.statusCode]);
+    throw HttpException(_statusCodeResponse[response.statusCode]);
   }
 
   Transaction toMap(Map<String, dynamic> json) {
@@ -79,4 +79,10 @@ class TransactionWebClient {
       ),
     );
   }
+}
+
+class HttpException implements Exception {
+  final String message;
+
+  HttpException(this.message);
 }

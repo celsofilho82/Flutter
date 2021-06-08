@@ -7,15 +7,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_client_with_interceptor.dart';
 
-class TransactionWebClient{
-
+class TransactionWebClient {
   Future<List<Transaction>> findAll() async {
     final Client client = HttpClientWithInterceptor.build(
       interceptors: [LoggingInterceptor()],
     );
     final Uri url = Uri.tryParse('http://10.0.0.104:8080/transactions');
     final Response response =
-    await client.get(url).timeout(Duration(seconds: 15));
+        await client.get(url).timeout(Duration(seconds: 15));
     List<Transaction> transactions = _toTransactions(response);
     return transactions;
   }
@@ -29,7 +28,8 @@ class TransactionWebClient{
     return transactions;
   }
 
-  Future<Transaction> save(Transaction transaction, String password, BuildContext context) async {
+  Future<Transaction> save(
+      Transaction transaction, String password, BuildContext context) async {
     final Client client = HttpClientWithInterceptor.build(
       interceptors: [LoggingInterceptor()],
     );
@@ -52,15 +52,20 @@ class TransactionWebClient{
 
     Map<String, dynamic> json = jsonDecode(response.body);
 
-    if(response.statusCode == 400){
-      throw Exception('there was an error submitting transaction');
+    if (response.statusCode == 200) {
+      return toMap(json);
     }
 
-    if(response.statusCode == 401){
-      throw Exception('authentication failed');
-    }
+    _throwHttpError(response);
+  }
 
-    return toMap(json);
+  void _throwHttpError(Response response) {
+    final Map<int, String> _statusCodeResponse = {
+      400 : 'there was an error submitting transaction',
+      401 : 'authentication failed'
+    };
+
+    throw Exception(_statusCodeResponse[response.statusCode]);
   }
 
   Transaction toMap(Map<String, dynamic> json) {
@@ -74,6 +79,4 @@ class TransactionWebClient{
       ),
     );
   }
-
-
 }

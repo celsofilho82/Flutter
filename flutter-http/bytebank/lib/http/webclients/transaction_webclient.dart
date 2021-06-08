@@ -13,7 +13,7 @@ class TransactionWebClient{
     final Client client = HttpClientWithInterceptor.build(
       interceptors: [LoggingInterceptor()],
     );
-    final Uri url = Uri.tryParse('http://192.168.0.109:8080/transactions');
+    final Uri url = Uri.tryParse('http://10.0.0.104:8080/transactions');
     final Response response =
     await client.get(url).timeout(Duration(seconds: 15));
     List<Transaction> transactions = _toTransactions(response);

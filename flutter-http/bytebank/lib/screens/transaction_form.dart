@@ -91,7 +91,7 @@ class _TransactionFormState extends State<TransactionForm> {
 
   void _save(Transaction transactionCreated, String password,
       BuildContext context, BuildContext dialogContext) async {
-    _webClient.save(transactionCreated, password, context).then((transaction) {
+   _webClient.save(transactionCreated, password, context).then((transaction) {
       if (transaction != null) {
         showDialog(
             context: context,
@@ -111,6 +111,12 @@ class _TransactionFormState extends State<TransactionForm> {
           builder: (dialogContext) {
             return FailureDialog(e.message);
           });
-    }, test: (e) => e is HttpException);
+    }, test: (e) => e is HttpException).catchError((e) {
+      showDialog(
+          context: context,
+          builder: (dialogContext) {
+            return FailureDialog('Unknown error');
+          });
+    }, test: (e) => e is Exception);
   }
 }

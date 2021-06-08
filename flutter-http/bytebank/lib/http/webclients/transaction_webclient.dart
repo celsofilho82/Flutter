@@ -42,7 +42,7 @@ class TransactionWebClient{
     };
 
     final String transactionJson = jsonEncode(transactionMap);
-    final Uri url = Uri.tryParse('http://192.168.0.109:8080/transactions');
+    final Uri url = Uri.tryParse('http://10.0.0.104:8080/transactions');
     final Response response = await client.post(url,
         headers: {
           'Content-type': 'application/json',
@@ -51,6 +51,15 @@ class TransactionWebClient{
         body: transactionJson);
 
     Map<String, dynamic> json = jsonDecode(response.body);
+
+    if(response.statusCode == 400){
+      throw Exception('there was an error submitting transaction');
+    }
+
+    if(response.statusCode == 401){
+      throw Exception('authentication failed');
+    }
+
     return toMap(json);
   }
 

@@ -70,13 +70,8 @@ class _TransactionFormState extends State<TransactionForm> {
                           builder: (dialogContext) {
                             return TransactionAuthDialog(
                               onConfirm: (String password) {
-                                _webClient
-                                    .save(transactionCreated, password, context)
-                                    .then((transaction) {
-                                  if (transaction != null) {
-                                    Navigator.pop(dialogContext);
-                                  }
-                                });
+                                _save(transactionCreated, password, context,
+                                    dialogContext);
                               },
                             );
                           });
@@ -89,5 +84,16 @@ class _TransactionFormState extends State<TransactionForm> {
         ),
       ),
     );
+  }
+
+  void _save(Transaction transactionCreated, String password,
+      BuildContext context, BuildContext dialogContext) async {
+    _webClient.save(transactionCreated, password, context).then((transaction) {
+      if (transaction != null) {
+        Navigator.pop(dialogContext);
+      }
+    }).catchError((e) {
+      print(e);
+    });
   }
 }

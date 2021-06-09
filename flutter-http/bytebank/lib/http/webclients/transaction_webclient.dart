@@ -43,6 +43,8 @@ class TransactionWebClient {
 
     final String transactionJson = jsonEncode(transactionMap);
     final Uri url = Uri.tryParse('http://10.0.0.104:8080/transactions');
+
+    await Future.delayed(Duration(seconds: 10));
     final Response response = await client.post(url,
         headers: {
           'Content-type': 'application/json',

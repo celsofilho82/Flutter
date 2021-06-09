@@ -35,6 +35,7 @@ class TransactionWebClient {
     );
     final Map<String, dynamic> transactionMap = {
       'value': transaction.value,
+      'id': transaction.id,
       'contact': {
         'name': transaction.contact.name,
         'accountNumber': transaction.contact.accountNumber,
@@ -64,10 +65,18 @@ class TransactionWebClient {
   void _throwHttpError(Response response) {
     final Map<int, String> _statusCodeResponse = {
       400: 'there was an error submitting transaction',
-      401: 'authentication failed'
+      401: 'authentication failed',
+      409: 'transaction always exists'
     };
 
-    throw HttpException(_statusCodeResponse[response.statusCode]);
+    throw HttpException(_getMessage(_statusCodeResponse, response));
+  }
+
+  String _getMessage(Map<int, String> _statusCodeResponse, Response response){
+    if(_statusCodeResponse.containsKey(response.statusCode)){
+      return _statusCodeResponse[response.statusCode];
+    }
+    return 'Unknown error';
   }
 
   Transaction toMap(Map<String, dynamic> json) {
@@ -79,6 +88,8 @@ class TransactionWebClient {
         contactJson['name'],
         contactJson['accountNumber'],
       ),
+      json['id'],
+
     );
   }
 }

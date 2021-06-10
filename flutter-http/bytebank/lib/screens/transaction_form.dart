@@ -23,6 +23,8 @@ class _TransactionFormState extends State<TransactionForm> {
   final TransactionWebClient _webClient = TransactionWebClient();
   final String transactionId = Uuid().v4();
 
+  bool _sending = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +44,7 @@ class _TransactionFormState extends State<TransactionForm> {
                     message: 'Sending...',
                   ),
                 ),
-                visible: false,
+                visible: _sending,
               ),
               Text(
                 widget.contact.name,
@@ -103,7 +105,10 @@ class _TransactionFormState extends State<TransactionForm> {
 
   void _save(Transaction transactionCreated, String password,
       BuildContext context, BuildContext dialogContext) async {
-    _webClient.save(transactionCreated, password, context).then((transaction) {
+    setState(() {
+      _sending = true;
+    });
+    await _webClient.save(transactionCreated, password, context).then((transaction) {
       if (transaction != null) {
         showDialog(
             context: context,
@@ -111,6 +116,9 @@ class _TransactionFormState extends State<TransactionForm> {
               return SuccessDialog('successful transacion');
             }).then((value) => Navigator.pop(context));
       }
+      setState(() {
+        _sending = false;
+      });
     }).catchError((e) {
       showDialog(
           context: context,
